@@ -1,0 +1,66 @@
+﻿@model List<Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<h1>Categories</h1>
+<a asp-action="Add" class="btn pl-5 pr-5 btn-primary mb-4">Add</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Added On</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <th scope="row">@Model[i].Id</th>
+                <td>@Model[i].Name</td>
+                <td>@Model[i].DateStamp</td>
+                <td><a asp-action="Edit" asp-route-id="@Model[i].Id" class="btn btn-primary">Edit</a></td>
+                <td><a href="javascript:{}" onclick="openmodal('/Admin/categories/delete/@Model[i].Id', '@Model[i].Name')" class="btn btn-primary">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are You Sure you want to Delete Category <span class="text-break" id="deletename"></span>?
+                <p class="text-danger">You Can't recover the Data.</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteform" method="post">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        function openmodal(url,name) {
+            document.getElementById("deleteform").setAttribute("action", url);
+            document.getElementById("deletename").innerText = name;
+            $('#deletemodal').modal('show');
+        }
+    </script>
+}
